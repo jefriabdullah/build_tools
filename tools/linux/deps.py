@@ -7,7 +7,7 @@ import os
 import subprocess
 
 def install_deps():
-  if base.is_file("./packages_complete"):
+  if base.is_file("./_packages_complete"):
     return
 
   # dependencies
@@ -58,7 +58,9 @@ def install_deps():
   if (nodejs_cur < 16000):
     print("Node.js version cannot be less 16")
     print("Reinstall")
-    base.run_as_bat(["curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - &&sudo apt-get install -y nodejs"])    
+    base.cmd("sudo", ["apt-get", "purge", "-y", "nodejs*"])
+    base.cmd("sudo", ["apt-get", "autoremove", "-y"])
+    base.run_as_bat(["curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - && sudo apt-get install -y nodejs"])    
   else:
     print("OK")
     base.cmd("sudo", ["apt-get", "-y", "install", "npm", "yarn"], True)
